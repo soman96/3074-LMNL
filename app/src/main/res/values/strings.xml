@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">LMNL</string>
+    <string name="lmnl">LMNL</string>
+    <string name="your_elevator_pitch">Your Elevator Pitch</string>
+    <string name="display_name">Display Name</string>
+    <string name="bio">Bio</string>
+    <string name="website">Website</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register_prompt">Don\'t have an account? Register</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="login_prompt">Already have an account? Login</string>
 </resources>

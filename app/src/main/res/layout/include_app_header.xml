@@ -3,7 +3,7 @@
     android:id="@+id/tvAppHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="LMNL"
+    android:text="@string/lmnl"
     android:textSize="26sp"
     android:textStyle="bold|italic"
     android:gravity="center"
