@@ -44,4 +44,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Dynamic animation -- not using currently - but plan to use later
+    implementation("com.airbnb.android:lottie:6.4.0")
 }

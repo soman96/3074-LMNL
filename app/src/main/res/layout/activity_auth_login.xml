@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="24dp"
     android:id="@+id/main"
-    tools:context=".user.LoginActivity">
+    tools:context=".auth.LoginActivity">
 
     <!-- App Header -->
     <include

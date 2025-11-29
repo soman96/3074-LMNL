@@ -7,4 +7,4 @@
     android:textSize="26sp"
     android:textStyle="bold|italic"
     android:gravity="center"
-    android:padding="16dp" />
+    android:padding="5dp" />
