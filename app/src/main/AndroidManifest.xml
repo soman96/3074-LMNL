@@ -15,6 +15,9 @@
             android:name=".user.ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".user.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".user.CreateProfileActivity"
             android:exported="false" />
         <activity
@@ -25,6 +28,9 @@
             android:exported="false" />
         <activity android:name=".post.FeedActivity" />
         <activity android:name=".post.CreatePostActivity" />
+        <activity
+            android:name=".post.PostDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >

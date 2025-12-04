@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SearchView;
+
 import com.example.lmnl.R;
 import com.example.lmnl.user.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,8 +28,10 @@ public class FeedActivity extends AppCompatActivity {
     private PostsDbHelper dbHelper;
     private BottomNavigationView bottomNav;
     private FloatingActionButton fabPost;
+    private SearchView searchView;
     private DailyLimitsManager limitsManager;
     private TextView tvFeedCount, tvPostCount, tvLikesCount, tvCommentsCount;
+    private List<Post> allPosts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,22 @@ public class FeedActivity extends AppCompatActivity {
         tvPostCount = findViewById(R.id.tvPostCount);
         tvLikesCount = findViewById(R.id.tvLikesCount);
         tvCommentsCount = findViewById(R.id.tvCommentsCount);
+
+        // Setup search
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterPosts(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterPosts(newText);
+                return true;
+            }
+        });
 
         // Setup bottom navigation
         bottomNav = findViewById(R.id.bottomNav);
@@ -137,12 +157,32 @@ public class FeedActivity extends AppCompatActivity {
             cursor.close();
         }
 
+        allPosts = posts;
         postsAdapter.setPosts(posts);
 
         // Increment feed view count
         if (!posts.isEmpty() && limitsManager.canViewFeed()) {
             limitsManager.incrementFeedCount();
         }
+    }
+
+    private void filterPosts(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            postsAdapter.setPosts(allPosts);
+            return;
+        }
+
+        String lowerCaseQuery = query.toLowerCase().trim();
+        List<Post> filteredPosts = new ArrayList<>();
+
+        for (Post post : allPosts) {
+            if (post.getContent().toLowerCase().contains(lowerCaseQuery) ||
+                post.getUsername().toLowerCase().contains(lowerCaseQuery)) {
+                filteredPosts.add(post);
+            }
+        }
+
+        postsAdapter.setPosts(filteredPosts);
     }
 
     private void updateDailyLimitsUI() {

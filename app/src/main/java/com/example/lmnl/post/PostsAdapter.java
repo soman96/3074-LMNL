@@ -1,5 +1,6 @@
 package com.example.lmnl.post;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         holder.tvPostUsername.setText("@" + post.getUsername());
         holder.tvPostContent.setText(post.getContent());
         holder.tvPostTimestamp.setText(formatTimestamp(post.getCreatedAt()));
+
+        // Handle click to view post details
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), PostDetailActivity.class);
+            intent.putExtra(PostDetailActivity.EXTRA_POST_ID, post.getId());
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override

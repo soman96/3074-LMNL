@@ -100,8 +100,22 @@
             android:layout_height="wrap_content"
             android:text="Edit Profile"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintTop_toBottomOf="@id/tvBio"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnLogout" />
+
+        <!-- Logout button -->
+        <Button
+            android:id="@+id/btnLogout"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tvBio"
+            app:layout_constraintStart_toEndOf="@id/btnEditProfile"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,8 @@ public class SessionManager {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_FULL_NAME = "fullName";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_BIO = "bio";
+    private static final String KEY_WEBSITE = "website";
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -26,6 +28,14 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void updateProfile(String fullName, String email, String bio, String website) {
+        editor.putString(KEY_FULL_NAME, fullName);
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_BIO, bio);
+        editor.putString(KEY_WEBSITE, website);
+        editor.apply();
+    }
+
     public boolean isLoggedIn() {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false);
     }
@@ -40,6 +50,14 @@ public class SessionManager {
 
     public String getEmail() {
         return prefs.getString(KEY_EMAIL, null);
+    }
+
+    public String getBio() {
+        return prefs.getString(KEY_BIO, null);
+    }
+
+    public String getWebsite() {
+        return prefs.getString(KEY_WEBSITE, null);
     }
 
     public void logout() {

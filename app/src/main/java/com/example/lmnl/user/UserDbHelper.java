@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class UserDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "users.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + UserContract.UserEntry.TABLE_NAME + " (" +
@@ -15,7 +15,9 @@ public class UserDbHelper extends SQLiteOpenHelper {
                     UserContract.UserEntry.COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, " +
                     UserContract.UserEntry.COLUMN_FULL_NAME + " TEXT NOT NULL, " +
                     UserContract.UserEntry.COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, " +
-                    UserContract.UserEntry.COLUMN_PASSWORD + " TEXT NOT NULL" +
+                    UserContract.UserEntry.COLUMN_PASSWORD + " TEXT NOT NULL, " +
+                    UserContract.UserEntry.COLUMN_BIO + " TEXT, " +
+                    UserContract.UserEntry.COLUMN_WEBSITE + " TEXT" +
                     ");";
 
     private static final String SQL_DROP_TABLE =

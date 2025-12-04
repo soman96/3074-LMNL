@@ -30,7 +30,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvDisplayName, tvUsername, tvWebsite, tvBio;
-    private Button btnEditProfile;
+    private Button btnEditProfile, btnLogout;
     private RecyclerView rvUserPosts;
     private SessionManager sessionManager;
     private PostsDbHelper postsDbHelper;
@@ -53,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvWebsite = findViewById(R.id.tvWebsite);
         tvBio = findViewById(R.id.tvBio);
         btnEditProfile = findViewById(R.id.btnEditProfile);
+        btnLogout = findViewById(R.id.btnLogout);
         rvUserPosts = findViewById(R.id.rvUserPosts);
 
         sessionManager = new SessionManager(this);
@@ -69,19 +70,34 @@ public class ProfileActivity extends AppCompatActivity {
         // Load user's posts
         loadUserPosts();
 
-        // Edit Profile button - for now, show logout option
-        btnEditProfile.setOnClickListener(v -> showLogoutDialog());
+        // Edit Profile button
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        // Logout button
+        btnLogout.setOnClickListener(v -> showLogoutDialog());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload user info in case it was updated
+        loadUserInfo();
     }
 
     private void loadUserInfo() {
         String username = sessionManager.getUsername();
         String fullName = sessionManager.getFullName();
         String email = sessionManager.getEmail();
+        String bio = sessionManager.getBio();
+        String website = sessionManager.getWebsite();
 
         tvDisplayName.setText(fullName != null ? fullName : "User");
         tvUsername.setText("@" + (username != null ? username : "username"));
-        tvWebsite.setText(email != null ? email : "");
-        tvBio.setText("Welcome to LMNL - Less Noise, More Connection");
+        tvWebsite.setText(website != null && !website.isEmpty() ? website : (email != null ? email : ""));
+        tvBio.setText(bio != null && !bio.isEmpty() ? bio : "Welcome to LMNL - Less Noise, More Connection");
     }
 
     private void loadUserPosts() {

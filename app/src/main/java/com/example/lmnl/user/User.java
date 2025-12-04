@@ -6,13 +6,17 @@ public class User {
     private String fullName;
     private String email;
     private String password;
+    private String bio;
+    private String website;
 
-    public User(long id, String username, String fullName, String email, String password) {
+    public User(long id, String username, String fullName, String email, String password, String bio, String website) {
         this.id = id;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.bio = bio;
+        this.website = website;
     }
 
     public long getId() {
@@ -33,5 +37,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getWebsite() {
+        return website;
     }
 }

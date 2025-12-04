@@ -34,6 +34,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- SEARCH BAR -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            app:queryHint="Search posts..."
+            app:iconifiedByDefault="false" />
+
         <!-- DAILY LIMITS CARD -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/dailyLimitsCard"

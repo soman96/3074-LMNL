@@ -14,5 +14,7 @@ public final class UserContract {
         public static final String COLUMN_FULL_NAME = "full_name";
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PASSWORD = "password";
+        public static final String COLUMN_BIO = "bio";
+        public static final String COLUMN_WEBSITE = "website";
     }
 }
