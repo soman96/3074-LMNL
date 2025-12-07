@@ -1,6 +1,7 @@
 package com.example.lmnl.post;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lmnl.R;
 import com.example.lmnl.auth.SessionManager;
+import com.example.lmnl.user.ProfileActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +43,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private PostsDbHelper dbHelper;
     private SessionManager sessionManager;
     private DailyLimitsManager limitsManager;
+    private BottomNavigationView bottomNav;
 
     private long postId;
     private Post currentPost;
@@ -96,6 +100,29 @@ public class PostDetailActivity extends AppCompatActivity {
         btnLike.setOnClickListener(v -> toggleLike());
         btnComment.setOnClickListener(v -> etComment.requestFocus());
         btnPostComment.setOnClickListener(v -> postComment());
+
+        // Setup bottom navigation
+        bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_back) {
+                // Back button - finish this activity to return to feed
+                finish();
+                return true;
+            } else if (itemId == R.id.menu_feed) {
+                // Navigate to feed
+                Intent intent = new Intent(PostDetailActivity.this, FeedActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.menu_profile) {
+                // Navigate to profile
+                Intent intent = new Intent(PostDetailActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
     }
 
     private void loadPost() {

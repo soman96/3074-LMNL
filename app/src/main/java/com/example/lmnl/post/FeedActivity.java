@@ -38,8 +38,6 @@ public class FeedActivity extends AppCompatActivity {
     private TextView tvFeedCount, tvPostCount, tvLikesCount, tvCommentsCount;
     private List<Post> allPosts = new ArrayList<>();
     private List<Post> originalPosts = new ArrayList<>();
-    private int currentPostIndex = 0;
-    private Button btnLoadNextPost;
     private MaterialToolbar topAppBar;
 
     @Override
@@ -117,13 +115,8 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
 
-        // Setup Load Next Post button
-        btnLoadNextPost = findViewById(R.id.btnLoadNextPost);
-        btnLoadNextPost.setOnClickListener(v -> loadNextPost());
-
         // Load data the first time
         loadPostsFromDb();
-        showCurrentPost();
         updateDailyLimitsUI();
     }
 
@@ -133,9 +126,7 @@ public class FeedActivity extends AppCompatActivity {
         // Set feed as selected when returning
         bottomNav.setSelectedItemId(R.id.menu_feed);
         // Reload in case something changed (e.g., user created a new post)
-        currentPostIndex = 0;
         loadPostsFromDb();
-        showCurrentPost();
         updateDailyLimitsUI();
     }
 
@@ -184,16 +175,16 @@ public class FeedActivity extends AppCompatActivity {
 
         originalPosts = new ArrayList<>(posts);
         allPosts = new ArrayList<>(posts);
-        // Don't pass posts to adapter or increment feed count here
-        // This will be done in showCurrentPost() and loadNextPost()
+
+        // Immediately display all loaded posts in the adapter
+        postsAdapter.setPosts(allPosts);
     }
 
     private void filterPosts(String query) {
         if (query == null || query.trim().isEmpty()) {
             // Reset to all original posts
             allPosts = new ArrayList<>(originalPosts);
-            currentPostIndex = 0;
-            showCurrentPost();
+            postsAdapter.setPosts(allPosts);
             return;
         }
 
@@ -207,71 +198,16 @@ public class FeedActivity extends AppCompatActivity {
             }
         }
 
-        // Apply filter and reset to first matching post
+        // Apply filter and update adapter
         allPosts = filteredPosts;
-        currentPostIndex = 0;
-        showCurrentPost();
-    }
-
-    private void showCurrentPost() {
-        if (allPosts.isEmpty()) {
-            // No posts available
-            postsAdapter.setPosts(new ArrayList<>());
-            btnLoadNextPost.setText("No posts available");
-            btnLoadNextPost.setEnabled(false);
-            return;
-        }
-
-        if (currentPostIndex >= allPosts.size()) {
-            // Already at or beyond the last post
-            btnLoadNextPost.setText("No more posts");
-            btnLoadNextPost.setEnabled(false);
-            return;
-        }
-
-        // Show all posts from 0 to currentPostIndex (inclusive)
-        List<Post> loadedPosts = new ArrayList<>();
-        for (int i = 0; i <= currentPostIndex && i < allPosts.size(); i++) {
-            loadedPosts.add(allPosts.get(i));
-        }
-        postsAdapter.setPosts(loadedPosts);
-
-        // Update button text to show progress
-        btnLoadNextPost.setText(String.format("Load Next Post (%d/%d)",
-            currentPostIndex + 1, allPosts.size()));
-        btnLoadNextPost.setEnabled(true);
-    }
-
-    private void loadNextPost() {
-        // Check if feed limit reached
-        if (!limitsManager.canViewFeed()) {
-            Toast.makeText(this, "Daily feed limit reached (10/10)", Toast.LENGTH_SHORT).show();
-            btnLoadNextPost.setEnabled(false);
-            return;
-        }
-
-        // Check if there are more posts to load
-        if (currentPostIndex < allPosts.size() - 1) {
-            // Move to next post
-            currentPostIndex++;
-
-            // Increment feed counter
-            limitsManager.incrementFeedCount();
-
-            // Update UI
-            updateDailyLimitsUI();
-            showCurrentPost();
-        } else {
-            // No more posts
-            Toast.makeText(this, "No more posts available", Toast.LENGTH_SHORT).show();
-            btnLoadNextPost.setText("No more posts");
-            btnLoadNextPost.setEnabled(false);
-        }
+        postsAdapter.setPosts(allPosts);
     }
 
     private void updateDailyLimitsUI() {
+        // Show actual number of posts loaded (max 10)
+        int postCount = Math.min(allPosts.size(), DailyLimitsManager.LIMIT_FEED);
         tvFeedCount.setText(String.format("Feed %d / %d",
-                limitsManager.getFeedCount(), DailyLimitsManager.LIMIT_FEED));
+                postCount, DailyLimitsManager.LIMIT_FEED));
         tvPostCount.setText(String.format("Posts %d / %d",
                 limitsManager.getPostCount(), DailyLimitsManager.LIMIT_POSTS));
         tvLikesCount.setText(String.format("Likes %d / %d",
